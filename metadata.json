@@ -1,0 +1,6 @@
+{
+  "name": "المتكامل — حاسبة التكامل بالخطوات",
+  "description": "حاسبة تكامل رياضية متقدمة للتكامل المحدود وغير المحدود بجميع الطرق مع خطوات حل تفصيلية ورسم بياني تفاعلي.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
