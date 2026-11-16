@@ -5,7 +5,28 @@ let cachedFontEmbedCssPromise: Promise<string> | null = null;
 
 async function getCachedFontEmbedCss(sampleEl: HTMLElement): Promise<string | undefined> {
   if (!cachedFontEmbedCssPromise) {
-    cachedFontEmbedCssPromise = getFontEmbedCSS(sampleEl, { cacheBust: false }).catch(() => '');
+    cachedFontEmbedCssPromise = (async () => {
+      const disabledSheets: CSSStyleSheet[] = [];
+      for (const sheet of Array.from(document.styleSheets)) {
+        try {
+          void sheet.cssRules;
+        } catch {
+          if (!sheet.disabled) {
+            sheet.disabled = true;
+            disabledSheets.push(sheet);
+          }
+        }
+      }
+      try {
+        return await getFontEmbedCSS(sampleEl, { cacheBust: false });
+      } catch {
+        return '';
+      } finally {
+        for (const sheet of disabledSheets) {
+          sheet.disabled = false;
+        }
+      }
+    })();
   }
   const css = await cachedFontEmbedCssPromise;
   return css.length > 0 ? css : undefined;
